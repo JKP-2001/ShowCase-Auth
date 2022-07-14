@@ -1,17 +1,30 @@
-require("dotenv").config();
+require("dotenv").config();    // to extracting our secrets from the .env file
 
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require("express");         // web framework fot Node js
+const mongoose = require("mongoose");           // to interacting with our DataBase 
 const app = express();
-const auth = require("./routes/auth");
-
 mongoose.connect("mongodb://localhost:27017/auth")
+
+
+const auth = require("./routes/auth"); 
 
 app.get("/",(req,res)=>{
     res.send("Welcome");
 })
 
-app.use(express.json());
+
+var cors = require('cors')    // Cross-Origin Resource Sharing
+
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
+
+
+app.use(cors(corsOptions))
+
+app.use(express.json());             // parse the incoming requests with JSON payload.
 app.use("/auth",auth);
 
 
